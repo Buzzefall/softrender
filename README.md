@@ -1,5 +1,5 @@
 # Software Renderer
-Software-rendered demoscene. Based on rasterisation. 
+Software-rendered demoscene. Based on rasterisation algorithm. 
 
 **C++17** required.
 

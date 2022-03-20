@@ -1,5 +1,5 @@
 #include <softrender/engine/scene.h>
-#include <softrender/engine/screen.h>
+#include <softrender/graphics/screen.h>
 #include <softrender/graphics/core.h>
 #include <softrender/utils/utils.h>
 

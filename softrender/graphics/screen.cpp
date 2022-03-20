@@ -1,13 +1,14 @@
 #include <cassert>
 #include <iostream>
 #include <string>
-#include <softrender/engine/screen.h>
+#include <softrender/graphics/screen.h>
 #include <softrender/utils/tgaimage.h>
 
 inline uint32_t pack_color(TGAColor& color, const bool ignore_alpha = true) {
 	if (ignore_alpha) { color[3] = 255; }
 	return (color[3] << 24) + (color[0] << 16) + (color[1] << 8) + color[2];
 }
+
 inline TGAColor unpack_color(uint32_t& color) {
 	return {uint8_t(color & 255), 
 			uint8_t(color >> 8 & 255), 

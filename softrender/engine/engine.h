@@ -2,7 +2,7 @@
 
 #include <SDL.h>
 #include <softrender/engine/scene.h>
-#include <softrender/engine/screen.h>
+#include <softrender/graphics/screen.h>
 #include <softrender/utils/utils.h>
 
 constexpr uint16_t FPS_LIMITER_60 = 16;

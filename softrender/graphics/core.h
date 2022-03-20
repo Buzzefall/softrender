@@ -1,6 +1,6 @@
 #pragma once
 
-#include <softrender/engine/screen.h>
+#include <softrender/graphics/screen.h>
 #include <softrender/graphics/enum.h>
 #include <softrender/graphics/geometry.h>
 #include <softrender/graphics/model.h>

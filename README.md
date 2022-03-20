@@ -1,5 +1,7 @@
 # Software Renderer
-Demo version of software renderer based on rasterisation. C++17 required.
+Software-rendered demoscene. Based on rasterisation. 
+
+**C++17** required.
 
 ## Usage
 Execute binary following with arbitrary N paths to objects separated by space (only right slashes / for object names):

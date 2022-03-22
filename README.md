@@ -7,7 +7,7 @@ Software-rendered demoscene. Based on rasterisation algorithm.
 Execute binary following with arbitrary N > 1 paths to objects separated by space (only right slashes / for object names):
 
 ```Bash
-<bin_filename> <obj_folder_path>/<obj_name>/<obj_name>.obj [[<obj2_folder_path>/<obj2_name>/<obj2_name>.obj] ...]`
+<bin_filename> <obj_folder_path>/<obj_name>/<obj_name>.obj [[<obj2_folder_path>/<obj2_name>/<obj2_name>.obj] ...]
 ```
 
 **Example**:

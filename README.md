@@ -1,5 +1,6 @@
 # Software Renderer
 Software-rendered demoscene. Based on rasterisation algorithm and Gouraud shading.
+
 Uses SDL2 to display framebuffer contents onto a screen.
 
 **C++17** required.

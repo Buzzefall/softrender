@@ -1,5 +1,5 @@
 # Software Renderer
-Software-rendered demoscene. Based on rasterisation algorithm and Gouraud shading.
+Software-rendered demoscene. Rendering based on rasterisation algorithm and Gouraud shading. Supported models in Wavefront .obj files.
 
 Uses SDL2 to display framebuffer contents onto a screen.
 

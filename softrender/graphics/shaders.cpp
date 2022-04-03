@@ -58,17 +58,19 @@ bool HeatMapShader::fragment(Vec3 baryc, TGAColor& gl_FragColor) {
 	if (discard) return discard;
 
 	auto frag_point = view_tri * baryc;
-	auto max_heat_distance = 0.25;
-	auto min_heat_distance = 3.5;
+	auto max_heat_distance = 0.0;
+	auto min_heat_distance = 4.0;
 	auto dist = (heat_source - frag_point).norm();
 	auto heat = (min_heat_distance - dist) / (min_heat_distance - max_heat_distance);
 
-	auto r_green = 0.75;
-	auto l_green = 0.25;
+	// TODO
 
-	auto red_contrib	= exp(pow(heat - 1.0, 2));
-	auto green_contrib	= exp(pow(heat - 0.5, 2));
-	auto blue_contrib	= exp(pow(heat - 0.0, 2));							
+	auto red_contrib	= pow((heat - 1.0), 0.45);
+	auto green_contrib	= pow((heat - 0.5), 0.45);
+	auto blue_contrib	= pow((heat - 0.0), 0.45);
+
+	//auto r_green = 0.75;
+	//auto l_green = 0.25;
 
 	//auto red_contrib	= (heat > 0.5)							? 2.0 * (heat - 0.5) : 0;
 	//auto green_contrib	= (heat >= l_green && heat <= r_green)	? 4.0 * (0.25 - abs(heat - 0.5)) : 0;

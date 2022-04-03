@@ -15,5 +15,6 @@ void RotatingObject::update(high_resolution_clock::time_point time) {
 	static auto past = time;
 	constexpr auto step = M_PI * 7e-5;
 	auto radians = step * duration<double, milli>(time - past).count();
-	Rotation = get_Rotation(Axis3D::X, radians) * get_Rotation(Axis3D::Y, radians);
+	//Rotation = get_Rotation(Axis3D::X, radians) * get_Rotation(Axis3D::Y, radians);
+	Rotation = get_Rotation(Axis3D::Y, radians);
 }

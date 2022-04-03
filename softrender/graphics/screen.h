@@ -44,7 +44,7 @@ public:
 
 	
 	void clear_init();
-	void render_frame();
+	void render_frame() const;
 	void zbuffer_set(int x_screen, int y_screen, double Z) const;
 	void zbuffer_save(const std::string& filename = "tests/zbuffer.tga") const;
 	[[nodiscard]] bool zbuffer_test(int x_screen, int y_screen, double Z);

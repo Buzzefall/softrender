@@ -10,7 +10,7 @@ struct Object
 	Mat4 Position = Mat4::identity();
 	Mat4 Rotation = Mat4::identity();
 
-	Object(const std::string& object_filename);
+	explicit Object(const std::string& object_filename);
 	virtual ~Object() = default;
 	Object(const Object&) = delete;
 	Object& operator=(const Object&) = delete;

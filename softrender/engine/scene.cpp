@@ -3,7 +3,8 @@
 #include <softrender/graphics/core.h>
 #include <softrender/utils/utils.h>
 
-Vec3 default_viewpoint			= {1, 1, 2};
+
+Vec3 default_viewpoint			= {0, 0, 2};
 Vec3 default_target				= {0, 0, 0};
 Vec3 default_camera_orientation = {0, 1, 0};
 Vec3 default_light_dir			= {0, 0, 1};
@@ -15,13 +16,14 @@ Scene::Scene(const std::vector<std::string>& object_names) : light_direction(def
 
 void Scene::load_objects(const std::vector<std::string>& obj_names) {
 	for (auto& name : obj_names) {
-		objects.push_back(new RotatingObject(name));
+		objects.push_back(std::make_unique<RotatingObject>(name));
 	}
 }
 
 
-// TODO: Scene::save(path)
-bool Scene::save(const std::string& path) { return false; }
+bool Scene::save(const std::string& path) {
+	return false; // TODO: Scene::save(path)
+}
 
 
 void Scene::update(high_resolution_clock::time_point time) {
@@ -40,14 +42,15 @@ void Scene::render(Screen& target) {
 	for (auto& obj : objects) {
 		auto Model = obj->Position * obj->Rotation;
 		//GouraudShader shader { light_direction, obj->model, (View * Model), Projection, Viewport };
-		GouraudWireShader shader { 3e-2, light_direction, obj->model, (View * Model), Projection, Viewport };
+		//GouraudWireShader shader { 5e-2, light_direction, obj->model, (View * Model), Projection, Viewport };
+		HeatMapShader shader {View * Vec4(default_viewpoint) , light_direction, obj->model, (View * Model), Projection, Viewport };
 		for (uint32_t iface = 0; iface < obj->model.get_faces_count(); iface++) {
 			Mat<3, 4> verts_screenspace;
-			for (int ivert = 0; ivert < 3; ivert++) {
+			for (int ivert : {0, 1, 2}) {
 				verts_screenspace[ivert] = shader.vertex(iface, ivert);
 			}
 
 			draw_triangle(verts_screenspace, Viewport, shader, target);
-		} 
+		}
 	}
 }

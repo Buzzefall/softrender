@@ -1,7 +1,7 @@
 #include <softrender/graphics/core.h>
 #include <softrender/graphics/geometry.h>
-#include <softrender/graphics/model.h>
 #include <softrender/utils/tgaimage.h>
+#include <omp.h>
 
 //////////////////////
 // ::Conventions:: //
@@ -11,42 +11,6 @@
 // z+ => From display to viewer   
 // Right-Hand Rule is being used
 ////////////////////////////////
-
-GouraudShader::GouraudShader(const Vec3& light_dir, const Model& obj_model, Mat4 viewmodel_m, Mat4 projection_m, Mat4 viewport_m):
-	IShader(obj_model, viewmodel_m, projection_m, viewport_m),
-	light_direction(light_dir) { }
-
-
-Vec4 GouraudShader::vertex(uint32_t iface, uint32_t ivert) {
-	varying_norms.set_col(Vec3(ViewModel.transpose().inverse() * model.get_normal(iface, ivert)).normalize(), ivert);
-	varying_uv.set_col(model.get_texcoords(iface, ivert), ivert);
-	auto gl_Position = ViewModel * model.get_vertex(iface, ivert);
-	view_tri.set_col(gl_Position, ivert);
-	gl_Position = Projection * gl_Position;
-	return gl_Position;
-}
-
-
-bool GouraudShader::fragment(Vec3 baryc, TGAColor& gl_FragColor) {
-	Vec3 n_frag = varying_norms * baryc;
-	Vec2 uv_frag = varying_uv * baryc;
-	TGAColor color = sample2D(uv_frag, model.get_diffusemap());
-	if (auto intensity = light_intensity(n_frag, light_direction); intensity >= 0.0) {
-		gl_FragColor = color * intensity;
-		return false;
-	}
-	return true;
-}
-
-
-GouraudWireShader::GouraudWireShader(double thickness, const Vec3& light_dir, const Model& obj_model, Mat4 viewmodel_m, Mat4 projection_m,
-	Mat4 viewport_m) : GouraudShader(light_dir, obj_model, viewmodel_m, projection_m, viewport_m), thickness(thickness) {}
-
-
-bool GouraudWireShader::fragment(Vec3 baryc, TGAColor& gl_FragColor) {
-	auto discard = baryc.x < thickness || baryc.y < thickness || baryc.z < thickness;
-	return discard && GouraudShader::fragment(baryc, gl_FragColor);
-}
 
 
 Mat4 get_Rotation(Axis3D axis, double radians) {
@@ -222,11 +186,6 @@ void viewport_orthogonal_depr(Vec3 vertices[3], const int count, const Screen& s
 }
 
 
-double light_intensity(const Vec3& face_norm, const Vec3& light_dir) {
-	return light_dir * face_norm;
-}
-
-
 void draw_triangle(const Mat<3, 4>& pts_view, const Mat4& Viewport, IShader& shader, Screen& screen) {
 	Vec4 pts_clip[3] =	{ pts_view[0]/pts_view[0].w, pts_view[1]/pts_view[1].w, pts_view[2]/pts_view[2].w };
 	Vec2 pts_screen[3] = { Vec2(Viewport * pts_clip[0]), Vec2(Viewport * pts_clip[1]), Vec2(Viewport * pts_clip[2])};
@@ -234,6 +193,7 @@ void draw_triangle(const Mat<3, 4>& pts_view, const Mat4& Viewport, IShader& sha
 	Vec2 P_screen, bbox_screen[2];
 	Vec2 clamp(screen.get_width() - 1.0, screen.get_height() - 1.0);
 	find_bounding_box(pts_screen, bbox_screen, clamp);
+
 	for (P_screen.x = static_cast<int>(bbox_screen[0].x); P_screen.x <= static_cast<int>(bbox_screen[1].x); P_screen.x++) {
 		for (P_screen.y = static_cast<int>(bbox_screen[0].y); P_screen.y <= static_cast<int>(bbox_screen[1].y); P_screen.y++) {
 			auto bcc_screen = barycentric(pts_screen, P_screen);

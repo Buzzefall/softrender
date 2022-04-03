@@ -62,22 +62,20 @@ const int& Screen::get_camera_orientation(Axis3D axis) const	{ return axis ? (ax
 const double& Screen::get_zbuffer_depth() const					{ return zbuffer_depth; }
 
 
-void Screen::render_frame() {
-    SDL_UpdateTexture(&renderer_frame_buffer, NULL, local_frame_buffer, 4 * width);
+void Screen::render_frame() const {
+    SDL_UpdateTexture(&renderer_frame_buffer, nullptr, local_frame_buffer, 4 * width);
     SDL_RenderClear(&renderer);
-    SDL_RenderCopy(&renderer, &renderer_frame_buffer, NULL, NULL);
+    SDL_RenderCopy(&renderer, &renderer_frame_buffer, nullptr, nullptr);
     SDL_RenderPresent(&renderer);
 }
 
 
 bool Screen::zbuffer_test(const int x_screen, const int y_screen, const double Z) {
 	bool result = false;
-	static auto counter = 0;
+
 	int idx = x_screen + y_screen * width;
-	auto Zb = zbuffer[idx];
-	if (Zorientation * Zb > Zorientation * Z) {
+	if (Zorientation * zbuffer[idx] > Zorientation * Z) {
 		result = true;
-		counter++;
 	}
 
 	return result;
@@ -90,8 +88,10 @@ void Screen::zbuffer_set(int x_screen, int y_screen, double Z) const {
 
 
 void Screen::clear_init() {
-	for (size_t i = 0; i < width * height; i++) { local_frame_buffer[i] = 0; }
-	for (size_t i = 0; i < width * height; i++) { zbuffer[i] = Zorientation * std::numeric_limits<double>::max(); }
+	for (size_t i = 0; i < width * height; i++) {
+		local_frame_buffer[i] = 0;
+		zbuffer[i] = Zorientation * std::numeric_limits<double>::max();
+	}
 }
 
 

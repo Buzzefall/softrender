@@ -69,13 +69,18 @@ public:
 
     TGAImage();
     TGAImage(const int w, const int h, const int bpp);
-    bool  read_tga_file(const std::string filename);
+    bool read_tga_file(const std::string filename);
     bool write_tga_file(const std::string filename, const bool vflip=true, const bool rle=true) const;
     void flip_horizontally();
     void flip_vertically();
     void scale(const int w, const int h);
     TGAColor get(const int x, const int y) const;
-    inline void set(const int x, const int y, const TGAColor &c);
+
+    void set(const int x, const int y, const TGAColor &c) {
+	    if (!data.size() || x<0 || y<0 || x>=width || y>=height) return;
+	    memcpy(data.data()+(x+y*width)*bytespp, c.bgra, bytespp);
+    }
+
     int get_width() const;
     int get_height() const;
     int get_bytespp();

@@ -5,6 +5,7 @@
 #include <softrender/graphics/enum.h>
 #include <softrender/utils/tgaimage.h>
 
+
 class Screen {
 	size_t width;
 	size_t height;
@@ -32,8 +33,13 @@ public:
 	       int zorientation		  = -1,
 	       double camera_distance = 1.0);
 
-	~Screen();
+	Screen(const Screen& other) = delete;
+	Screen(Screen&& other) = delete;
 
+	Screen& operator=(const Screen& other) = delete;
+	Screen& operator=(Screen&& other) = delete;
+
+	~Screen();
 
 
 	[[nodiscard]] const size_t& get_width() const;
@@ -52,5 +58,4 @@ public:
 
 	void set(size_t x, size_t y, TGAColor& color);
 	[[nodiscard]] bool save(const std::string& filename) const;
-
 };

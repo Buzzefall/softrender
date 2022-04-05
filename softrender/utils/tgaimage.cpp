@@ -213,11 +213,6 @@ TGAColor TGAImage::get(const int x, const int y) const {
     return TGAColor(data.data()+(x+y*width)*bytespp, bytespp);
 }
 
-inline void TGAImage::set(int x, int y, const TGAColor &c) {
-    if (!data.size() || x<0 || y<0 || x>=width || y>=height) return;
-    memcpy(data.data()+(x+y*width)*bytespp, c.bgra, bytespp);
-}
-
 int TGAImage::get_bytespp() {
     return bytespp;
 }

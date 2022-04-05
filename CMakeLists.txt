@@ -24,8 +24,8 @@ if(MSVC)
   target_link_options(${PROJECT_NAME} PUBLIC "/LTCG")
 endif()
 
-set(CMAKE_INSTALL_PREFIX "${PROJECT_DIR}/built_application")
+set(CMAKE_INSTALL_PREFIX "${PROJECT_DIR}")
 
-install(TARGETS "${PROJECT_NAME}" DESTINATION .)
-install(FILES "${SDL2_DIR}/lib/x64/SDL2.dll" DESTINATION .)
-install(DIRECTORY "${PROJECT_DIR}/assets" DESTINATION .)
+install(TARGETS "${PROJECT_NAME}" DESTINATION run)
+install(FILES "${SDL2_DIR}/lib/x64/SDL2.dll" DESTINATION run)
+install(DIRECTORY "${PROJECT_DIR}/assets" DESTINATION run)
